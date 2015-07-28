@@ -2,9 +2,10 @@ var net = require('net');
 var port = 3000;
 var fs = require('fs');
 var logged = false;
-
+var users = [];
 var server = net.createServer(function(c) {
-	console.log("a user has connected");
+	users.push(c);
+	console.log(c.length+" users are connected");
 	c.write("Enter your username and password before you begin\r\n");
 	
 
@@ -18,7 +19,9 @@ var server = net.createServer(function(c) {
 
 			/////// CHECK USERNAME AND PASSWORD
 			if (logged) {
-
+				if (data[0] === '/help') {
+					c.write("Commands:\r\nadd [message]\r\nread (#)\r\ndel (#)\r\ndelAll\r\n");
+				}
 				////////adding a new message. ex: add i'm leaving you a message
 				if (data[0] === 'add') {
 					if (data.length > 2) {
@@ -85,7 +88,7 @@ var server = net.createServer(function(c) {
 				logged = true;
 				c.write("You're now logged in\r\n");
 				c.write("What do you want to do?\r\n");
-				c.write("Commands: add (message), del (#), delAll, read (#)\r\n");
+				c.write("Commands:\r\nadd [message]\r\nread (#)\r\ndel (#)\r\ndelAll\r\n");
 			}
 			else {
 				c.write("Username/Password is wrong.\r\n")
@@ -93,7 +96,9 @@ var server = net.createServer(function(c) {
 		}
 
 	})
-
+	c.on('end',function() {
+		console.log(c.length+" users are connected");
+	})
 // else {
 // 	if (accounts.name === data[0] && accounts.pass === data[1]) {
 // 		logged = true;
@@ -107,6 +112,7 @@ var server = net.createServer(function(c) {
 server.listen(port,function(){
 	console.log("waiting for input...");
 })
+
 
 function add(newMsg) {
 	var data = JSON.parse(fs.readFileSync('messages.json','utf8'));

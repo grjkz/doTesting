@@ -39,13 +39,13 @@ var server = net.createServer(function(c) {
 					if (messages.msg[data[1]]) {
 						var deleted = messages.msg.splice(data[1],1); //deletes the nth message specified by 2nd argument
 						fs.writeFileSync('messages.json',JSON.stringify(messages));
-						c.write("Message "+data[1]+": "+deleted);
-						c.write("^ This is the last time you'll see that message ^")
-						c.write(messages.msg.length+" messages remain");
+						c.write("Message "+data[1]+": "+deleted+"\r\n");
+						c.write("^ This is the last time you'll see that message ^\r\n")
+						c.write(messages.msg.length+" messages remain\r\n");
 					}
 					else {
-						c.write("Please check your input again. ex. del 0");
-						c.write("You have "+messages.msg.length+" messages");
+						c.write("Please check your input again. ex. del 0\r\n");
+						c.write("You have "+messages.msg.length+" messages\r\n");
 					}
 				}
 				
@@ -76,7 +76,7 @@ var server = net.createServer(function(c) {
 						})
 					}
 				}
-				console.log("I'm inside the logged area");
+				console.log("User logged in");
 			}
 		
 		else {

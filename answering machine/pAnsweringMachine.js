@@ -5,7 +5,7 @@ var logged = false;
 var users = [];
 var server = net.createServer(function(c) {
 	users.push(c);
-	console.log(c.length+" users are connected");
+	console.log(users.length+" users are connected");
 	c.write("Enter your username and password before you begin\r\n");
 	
 
@@ -97,7 +97,7 @@ var server = net.createServer(function(c) {
 
 	})
 	c.on('end',function() {
-		console.log(c.length+" users are connected");
+		console.log(users.length+" users are connected");
 	})
 // else {
 // 	if (accounts.name === data[0] && accounts.pass === data[1]) {
